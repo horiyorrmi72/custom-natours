@@ -1,0 +1,29 @@
+{
+  "name": "custom-natours",
+  "version": "1.0.0",
+  "description": "tour booking web app that will be using llm as a customer service for booking as well. inspired by jonas web tour project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/horiyorrmi72/custom-natours.git"
+  },
+  "keywords": [
+    "natours",
+    "custom-natours",
+    "llm-tour-booking",
+    "tour-booking",
+    "tour",
+    "hiking",
+    "nature",
+    "horla-techs"
+  ],
+  "author": "horla_techs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/horiyorrmi72/custom-natours/issues"
+  },
+  "homepage": "https://github.com/horiyorrmi72/custom-natours#readme"
+}
