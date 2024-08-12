@@ -113,7 +113,8 @@ const tourSchema = new Schema(
 	{
 		toJSON: { virtuals: true },
 		toObject: { virtuals: true },
-	}
+	},
+	{timestamps: true} //this will be use to track when a new tour is created [added to the list of tours]
 );
 
 tourSchema.virtual('reviews', {
