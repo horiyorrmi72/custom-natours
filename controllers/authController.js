@@ -52,6 +52,10 @@ const signin = catchAsync(async (req, res, next) => {
 		return next(new AppError('Invalid email or password', 400));
 	}
 	const user = await User.findOne({ email: email }).select('+password');
+	if (!user)
+	{
+		return next(new AppError('Invalid email or password! Not a valid user 😆',404))
+	}
 	const isPasswordMatch = await compareData(password, user.password);
 	if (!isPasswordMatch) {
 		return next(new AppError('Invalid user password!', 400));
