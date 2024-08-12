@@ -1,6 +1,6 @@
 const User = require('../models/user.model');
-const AppError = require('../utils/appError');
-const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError.utils');
+const catchAsync = require('../utils/catchAsync.utils');
 const { getOne, getAll, updateOne, deleteOne } = require('./handlerFactory');
 
 /**
