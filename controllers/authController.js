@@ -52,9 +52,10 @@ const signin = catchAsync(async (req, res, next) => {
 		return next(new AppError('Invalid email or password', 400));
 	}
 	const user = await User.findOne({ email: email }).select('+password');
-	if (!user)
-	{
-		return next(new AppError('Invalid email or password! Not a valid user 😆',404))
+	if (!user) {
+		return next(
+			new AppError('Invalid email or password! Not a valid user 😆', 404)
+		);
 	}
 	const isPasswordMatch = await compareData(password, user.password);
 	if (!isPasswordMatch) {
@@ -80,7 +81,7 @@ const signin = catchAsync(async (req, res, next) => {
 	});
 });
 
-const forgotPassword = async (req, res, next) => {
+const forgotPassword = catchAsync(async (req, res, next) => {
 	const { email } = req.body;
 	const user = await User.findOne({ email: email });
 	if (!user) {
@@ -95,10 +96,29 @@ const forgotPassword = async (req, res, next) => {
 			passwordResetExpires: Date.now() + 10 * 60 * 1000,
 		}
 	);
-
 	//send reset token to user email
-
-	console.log('Reset token for db' + hashResetToken);
+	try {
+		await sendPasswordResetTokenToMail(user, resetToken);
+		res
+			.status(200)
+			.json({ success: true, message: 'Reset token sent to user email' });
+	} catch (error) {
+		await User.updateOne(
+			{ _id: user._id },
+			{
+				passwordResetToken: undefined,
+				passwordResetExpires: undefined,
+			}
+		);
+		next(new AppError('Error sending email. Please try again later.', 500));
+	}
+});
+const sendPasswordResetTokenToMail = async (user, resetToken) => {
+	try {
+		await new Email(user, resetToken).sendPasswordReset();
+	} catch (error) {
+		console.error('Error Sending Reset OTP:', error.message);
+	}
 };
 
 module.exports = {
