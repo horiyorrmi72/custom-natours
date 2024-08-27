@@ -19,12 +19,13 @@ transporter.verify((error, success) => {
 });
 
 
-class Email{
-	constructor(user) {
+class Email {
+	constructor(user, resetToken) {
 		this.to = user.email;
 		this.firstName = user.name.split(' ')[0];
 		this.from = `horla from custom natours <${process.env._EMAIL}>`;
 		this.transporter = transporter;
+		this.resetToken = resetToken;
 	}
 
 	async send(template, subject) {
@@ -32,6 +33,7 @@ class Email{
 			`${__dirname}/../views/emails/pug/${template}.pug`,
 			{
 				firstName: this.firstName,
+				resetToken:this.resetToken,
 				subject,
 			}
 		);
@@ -54,10 +56,10 @@ class Email{
 
 	async sendPasswordReset() {
 		await this.send(
-			'passwordReset', 'Reset password instructions for your custom Natours account!'
+			'passwordReset',
+			'Reset password instructions for your custom Natours account!'
 		);
 	}
-	
 }
 
 module.exports = Email;
