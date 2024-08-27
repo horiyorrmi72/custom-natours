@@ -10,7 +10,6 @@ const { Model } = require('mongoose');
 const createOne = (Model) =>
 	catchAsync(async (req, res, next) => {
 		const document = await Model.create(req.body);
-
 		console.log(document);
 
 		res.status(201).json({
@@ -47,6 +46,12 @@ const getOne = (Model, queryName = 'user') =>
 const getAll = (Model, queryName) =>
 	catchAsync(async (req, res, next) => {
 		const documents = await Model.find().exec();
+		if (documents.length === 0) {
+			return res.status(200).json({
+				status: 'success',
+				message: `No ${queryName} documents found`,
+			});
+		}
 		res.status(200).json({
 			status: 'success',
 			message: `${queryName} Data fetched successfully!`,
